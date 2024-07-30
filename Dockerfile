@@ -4,20 +4,22 @@ WORKDIR /app
 
 # Copy backend files
 COPY backend ./backend
-COPY package*.json ./
 
 # Install backend dependencies
+WORKDIR /app/backend
 RUN npm install
 
 # Copy frontend files
+WORKDIR /app
 COPY frontend ./frontend
 
-# Build frontend
+# Install and build frontend
 WORKDIR /app/frontend
 RUN npm install && npm run build
 
+# Set working directory back to root
 WORKDIR /app
 
 EXPOSE 3000
 
-CMD ["npm", "start"]
+CMD ["node", "backend/server.js"]

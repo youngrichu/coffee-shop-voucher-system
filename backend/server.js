@@ -17,13 +17,20 @@ app.post('/api/redeem-voucher', async (req, res) => {
   const { voucherCode } = req.body;
 
   try {
+    console.log('Attempting to redeem voucher:', voucherCode);
+
     const { data, error } = await supabase
       .from('vouchers')
       .select('*')
       .eq('code', voucherCode)
       .single();
 
-    if (error) throw error;
+    if (error) {
+      console.error('Error fetching voucher:', error);
+      throw error;
+    }
+
+    console.log('Fetched voucher data:', data);
 
     if (!data) {
       return res.status(404).json({ success: false, message: 'Voucher not found.' });
@@ -42,17 +49,23 @@ app.post('/api/redeem-voucher', async (req, res) => {
       .update({ redeemed_at: new Date().toISOString() })
       .eq('code', voucherCode);
 
-    if (updateError) throw updateError;
+    if (updateError) {
+      console.error('Error updating voucher:', updateError);
+      throw updateError;
+    }
+
+    console.log('Voucher redeemed successfully');
 
     res.json({
       success: true,
       message: 'Voucher redeemed successfully! Customer gets a free coffee.',
     });
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error processing voucher:', error);
     res.status(500).json({
       success: false,
       message: 'An error occurred while processing the voucher.',
+      error: error.message
     });
   }
 });
@@ -65,4 +78,6 @@ app.get('*', (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+  console.log('Supabase URL:', process.env.SUPABASE_URL);
+  console.log('Supabase Anon Key:', process.env.SUPABASE_ANON_KEY ? '******' : 'Not set');
 });

@@ -1,22 +1,22 @@
 const express = require('express');
+const path = require('path');
 const { createClient } = require('@supabase/supabase-js');
-const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
-// Initialize Supabase client
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
 
-app.use(cors());
 app.use(express.json());
+
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, '../frontend/build')));
 
 app.post('/api/redeem-voucher', async (req, res) => {
   const { voucherCode } = req.body;
 
   try {
-    // Check if voucher exists and is not redeemed
     const { data, error } = await supabase
       .from('vouchers')
       .select('*')
@@ -33,11 +33,10 @@ app.post('/api/redeem-voucher', async (req, res) => {
       return res.status(400).json({
         success: false,
         message: 'Voucher has already been redeemed.',
-        redeemedAt: new Date(data.redeemed_at).toLocaleString(),
+        redeemedAt: data.redeemed_at,
       });
     }
 
-    // Redeem the voucher
     const { error: updateError } = await supabase
       .from('vouchers')
       .update({ redeemed_at: new Date().toISOString() })
@@ -58,6 +57,12 @@ app.post('/api/redeem-voucher', async (req, res) => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });

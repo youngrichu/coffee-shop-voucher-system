@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const { Pool } = require('pg');
+const moment = require('moment-timezone');
 require('dotenv').config();
 
 const app = express();
@@ -29,8 +30,9 @@ app.post('/api/redeem-voucher', async (req, res) => {
     if (voucherResult.rows.length === 0) {
       console.log('Voucher not found, creating a new one');
 
-      const insertQuery = 'INSERT INTO vouchers (code, redeemed_at) VALUES ($1, $2) RETURNING *';
-      const insertResult = await pool.query(insertQuery, [voucherCode, new Date().toISOString()]);
+      const createdAt = moment().tz('Asia/Dubai').format();
+      const insertQuery = 'INSERT INTO vouchers (code, created_at, redeemed_at) VALUES ($1, $2, $3) RETURNING *';
+      const insertResult = await pool.query(insertQuery, [voucherCode, createdAt, createdAt]);
 
       const newVoucher = insertResult.rows[0];
 
@@ -54,9 +56,11 @@ app.post('/api/redeem-voucher', async (req, res) => {
       });
     }
 
+    const redeemedAt = moment().tz('Asia/Dubai').format();
+
     // Query to update the voucher
     const updateQuery = 'UPDATE vouchers SET redeemed_at = $1 WHERE code = $2';
-    await pool.query(updateQuery, [new Date().toISOString(), voucherCode]);
+    await pool.query(updateQuery, [redeemedAt, voucherCode]);
 
     console.log('Voucher redeemed successfully');
 

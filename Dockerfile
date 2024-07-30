@@ -5,7 +5,7 @@ WORKDIR /app
 # Copy backend files
 COPY backend ./backend
 
-# Install backend dependencies
+# Install backend dependencies including moment-timezone
 WORKDIR /app/backend
 RUN npm install
 

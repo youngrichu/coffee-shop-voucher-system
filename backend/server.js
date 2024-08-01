@@ -7,24 +7,22 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Create a new pool instance
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
 });
 
 app.use(express.json());
 
-// Serve static files from the React app
 app.use(express.static(path.join(__dirname, '../frontend/build')));
 
 app.post('/api/redeem-voucher', async (req, res) => {
-  const { voucherCode } = req.body;
+  let { voucherCode } = req.body;
+  voucherCode = voucherCode.toLowerCase(); // Convert to lowercase
 
   try {
     console.log('Attempting to redeem voucher:', voucherCode);
 
-    // Query to fetch the voucher
-    const voucherQuery = 'SELECT * FROM vouchers WHERE code = $1';
+    const voucherQuery = 'SELECT * FROM vouchers WHERE LOWER(code) = $1';
     const voucherResult = await pool.query(voucherQuery, [voucherCode]);
 
     if (voucherResult.rows.length === 0) {
@@ -49,17 +47,17 @@ app.post('/api/redeem-voucher', async (req, res) => {
     console.log('Fetched voucher data:', voucher);
 
     if (voucher.redeemed_at) {
+      const formattedRedeemedAt = moment(voucher.redeemed_at).tz('Asia/Dubai').format('MMMM Do YYYY, h:mm:ss a');
       return res.status(400).json({
         success: false,
         message: 'Voucher has already been redeemed.',
-        redeemedAt: voucher.redeemed_at,
+        redeemedAt: formattedRedeemedAt,
       });
     }
 
     const redeemedAt = moment().tz('Asia/Dubai').format();
 
-    // Query to update the voucher
-    const updateQuery = 'UPDATE vouchers SET redeemed_at = $1 WHERE code = $2';
+    const updateQuery = 'UPDATE vouchers SET redeemed_at = $1 WHERE LOWER(code) = $2';
     await pool.query(updateQuery, [redeemedAt, voucherCode]);
 
     console.log('Voucher redeemed successfully');
@@ -78,8 +76,6 @@ app.post('/api/redeem-voucher', async (req, res) => {
   }
 });
 
-// The "catchall" handler: for any request that doesn't
-// match one above, send back React's index.html file.
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
 });

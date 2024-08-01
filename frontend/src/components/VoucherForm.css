@@ -1,0 +1,29 @@
+.voucher-form-container {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .form-control {
+    border: 2px solid #6F4E37;
+  }
+  
+  .form-control:focus {
+    border-color: #8B4513;
+    box-shadow: 0 0 0 0.2rem rgba(139, 69, 19, 0.25);
+  }
+  
+  .btn-primary {
+    background-color: #6F4E37;
+    border-color: #6F4E37;
+  }
+  
+  .btn-primary:hover, .btn-primary:focus {
+    background-color: #8B4513;
+    border-color: #8B4513;
+  }
+  
+  .alert {
+    border-radius: 5px;
+  }

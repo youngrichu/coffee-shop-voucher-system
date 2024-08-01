@@ -1,3 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #F5E6D3;
+}
+
 .App {
   text-align: center;
   display: flex;
@@ -6,9 +13,14 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #6F4E37;
   padding: 20px;
   color: white;
+}
+
+.logo {
+  max-width: 100px;
+  margin-bottom: 10px;
 }
 
 main {
@@ -16,11 +28,24 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: 40px 20px;
+  background-image: url('./assets/coffee-beans-bg.jpg');
+  background-size: cover;
+  background-position: center;
 }
 
 footer {
-  background-color: #282c34;
+  background-color: #6F4E37;
   color: white;
   padding: 10px;
+}
+
+footer a {
+  color: #F5E6D3;
+  text-decoration: none;
+  margin: 0 10px;
+}
+
+footer a:hover {
+  text-decoration: underline;
 }

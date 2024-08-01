@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Spinner from 'react-bootstrap/Spinner';
 
 const VoucherForm = () => {
   const [voucherCode, setVoucherCode] = useState('');
@@ -32,22 +34,31 @@ const VoucherForm = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={voucherCode}
-          onChange={(e) => setVoucherCode(e.target.value)}
-          placeholder="Enter voucher code"
-          required
-        />
-        <button type="submit" disabled={isLoading}>
-          {isLoading ? 'Redeeming...' : 'Redeem Voucher'}
+    <div className="container mt-4">
+      <form onSubmit={handleSubmit} className="form-inline">
+        <div className="form-group mb-2">
+          <input
+            type="text"
+            className="form-control"
+            value={voucherCode}
+            onChange={(e) => setVoucherCode(e.target.value)}
+            placeholder="Enter voucher code"
+            required
+          />
+        </div>
+        <button type="submit" className="btn btn-primary mb-2" disabled={isLoading}>
+          {isLoading ? (
+            <Spinner animation="border" size="sm" />
+          ) : (
+            'Redeem Voucher'
+          )}
         </button>
       </form>
       {result && (
-        <div>
-          <p>{result.message}</p>
+        <div className="mt-3">
+          <p className={`alert ${result.success ? 'alert-success' : 'alert-danger'}`}>
+            {result.message}
+          </p>
           {result.redeemedAt && <p>Redeemed at: {result.redeemedAt}</p>}
         </div>
       )}

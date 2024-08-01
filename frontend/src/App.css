@@ -17,24 +17,54 @@ body {
 }
 
 .App-header {
-  background-color: #6F4E37;
+  background-color: rgba(111, 78, 55, 0.9);
   color: #F5E6D3;
   padding: 20px;
   text-align: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.App-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, rgba(139, 69, 19, 0.6), rgba(111, 78, 55, 0.6));
+  z-index: 1;
+}
+
+.header-content {
+  position: relative;
+  z-index: 2;
 }
 
 .logo {
-  max-width: 100px;
+  max-width: 120px;
   margin-bottom: 10px;
-  animation: fadeIn 1.5s ease-in-out;
+  animation: fadeInRotate 1.5s ease-in-out;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
 }
 
 h1 {
   font-family: 'Playfair Display', serif;
-  font-size: 2.5rem;
+  font-size: 2.8rem;
   margin: 0;
   animation: slideIn 1s ease-in-out;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+h2 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin-top: 5px;
+  animation: slideIn 1s ease-in-out 0.3s;
+  opacity: 0;
+  animation-fill-mode: forwards;
 }
 
 main {
@@ -46,11 +76,12 @@ main {
 }
 
 footer {
-  background-color: #6F4E37;
+  background-color: rgba(111, 78, 55, 0.9);
   color: #F5E6D3;
   text-align: center;
   padding: 15px;
   font-size: 0.9rem;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
 }
 
 footer a {
@@ -64,14 +95,26 @@ footer a:hover {
   color: #FFD700;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+@keyframes fadeInRotate {
+  from { 
+    opacity: 0;
+    transform: rotate(-10deg) scale(0.9);
+  }
+  to { 
+    opacity: 1;
+    transform: rotate(0) scale(1);
+  }
 }
 
 @keyframes slideIn {
-  from { transform: translateY(-20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from { 
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to { 
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 @media (max-width: 600px) {
@@ -80,11 +123,15 @@ footer a:hover {
   }
 
   .logo {
-    max-width: 80px;
+    max-width: 100px;
   }
 
   h1 {
-    font-size: 2rem;
+    font-size: 2.2rem;
+  }
+
+  h2 {
+    font-size: 1.2rem;
   }
 
   main {

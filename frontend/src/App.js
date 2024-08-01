@@ -7,8 +7,11 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} alt="Kaldi's Coffee Logo" className="logo" />
-        <h1>Kaldi's Coffee Voucher Redemption</h1>
+        <div className="header-content">
+          <img src={logo} alt="Kaldi's Coffee Logo" className="logo" />
+          <h1>Kaldi's Coffee</h1>
+          <h2>Voucher Redemption</h2>
+        </div>
       </header>
       <main>
         <VoucherForm />

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Spinner from 'react-bootstrap/Spinner';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './VoucherForm.css';
 
 const VoucherForm = () => {
   const [voucherCode, setVoucherCode] = useState('');
@@ -34,19 +35,17 @@ const VoucherForm = () => {
   };
 
   return (
-    <div className="container mt-4">
-      <form onSubmit={handleSubmit} className="form-inline">
-        <div className="form-group mb-2">
-          <input
-            type="text"
-            className="form-control"
-            value={voucherCode}
-            onChange={(e) => setVoucherCode(e.target.value)}
-            placeholder="Enter voucher code"
-            required
-          />
-        </div>
-        <button type="submit" className="btn btn-primary mb-2" disabled={isLoading}>
+    <div className="voucher-form-container">
+      <form onSubmit={handleSubmit} className="voucher-form">
+        <input
+          type="text"
+          className="voucher-input"
+          value={voucherCode}
+          onChange={(e) => setVoucherCode(e.target.value)}
+          placeholder="Enter voucher code"
+          required
+        />
+        <button type="submit" className="voucher-button" disabled={isLoading}>
           {isLoading ? (
             <Spinner animation="border" size="sm" />
           ) : (
@@ -55,10 +54,8 @@ const VoucherForm = () => {
         </button>
       </form>
       {result && (
-        <div className="mt-3">
-          <p className={`alert ${result.success ? 'alert-success' : 'alert-danger'}`}>
-            {result.message}
-          </p>
+        <div className={`result-message ${result.success ? 'success' : 'error'}`}>
+          <p>{result.message}</p>
           {result.redeemedAt && <p>Redeemed at: {result.redeemedAt}</p>}
         </div>
       )}

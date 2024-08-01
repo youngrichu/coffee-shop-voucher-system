@@ -1,29 +1,78 @@
 .voucher-form-container {
-    background-color: rgba(255, 255, 255, 0.9);
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.8);
     border-radius: 10px;
-    padding: 30px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
   
-  .form-control {
+  .voucher-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .voucher-input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
     border: 2px solid #6F4E37;
-  }
-  
-  .form-control:focus {
-    border-color: #8B4513;
-    box-shadow: 0 0 0 0.2rem rgba(139, 69, 19, 0.25);
-  }
-  
-  .btn-primary {
-    background-color: #6F4E37;
-    border-color: #6F4E37;
-  }
-  
-  .btn-primary:hover, .btn-primary:focus {
-    background-color: #8B4513;
-    border-color: #8B4513;
-  }
-  
-  .alert {
     border-radius: 5px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+  }
+  
+  .voucher-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(111, 78, 55, 0.5);
+  }
+  
+  .voucher-button {
+    padding: 12px 24px;
+    background-color: #6F4E37;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .voucher-button:hover {
+    background-color: #8B4513;
+  }
+  
+  .voucher-button:disabled {
+    background-color: #A9A9A9;
+    cursor: not-allowed;
+  }
+  
+  .result-message {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .result-message.success {
+    background-color: #DFF0D8;
+    color: #3C763D;
+  }
+  
+  .result-message.error {
+    background-color: #F2DEDE;
+    color: #A94442;
+  }
+  
+  @media (max-width: 600px) {
+    .voucher-form-container {
+      padding: 15px;
+    }
+  
+    .voucher-input,
+    .voucher-button {
+      font-size: 14px;
+    }
   }
